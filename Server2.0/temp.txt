@@ -1,0 +1,15 @@
+# login interactively into the mqtt container
+docker exec -it e8686f7272ae sh
+
+# Create new password file and add user and it will prompt for password
+mosquitto_passwd -c /mosquitto/config/pwfile esp32
+
+# Add additional users (remove the -c option) and it will prompt for password
+mosquitto_passwd /mosquitto/config/pwfile user2
+
+# delete user command format
+mosquitto_passwd -D /mosquitto/config/pwfile <user-name-to-delete>
+
+# type 'exit' to exit out of docker container prompt
+
+docker restart e8686f7272ae

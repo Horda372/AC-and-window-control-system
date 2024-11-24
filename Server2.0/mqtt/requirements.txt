@@ -1,0 +1,7 @@
+pymongo
+paho-mqtt
+Flask 
+Flask-MQTT 
+Flask-PyMongo
+Flask-PyJWT 
+bcrypt 
