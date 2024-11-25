@@ -48,9 +48,9 @@ void reconnect() {
 
         if (client.connect("ESP32ClientHorda", mqtt_username, mqtt_password)) {
             Serial.println("connected");
-            client.subscribe(topic1);
+            //client.subscribe(topic1);
             client.subscribe(topic2);
-            client.subscribe(topic3);
+            //client.subscribe(topic3);
             wasConnected = true;
         } else {
             Serial.println("failed, reconnecting");

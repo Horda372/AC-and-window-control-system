@@ -15,6 +15,7 @@ interface Message {
   topic: string;
   content: string;
   isSender: boolean;
+  timestamp: string;
 }
 
 const HistoryLogs = () => {
@@ -37,19 +38,27 @@ const HistoryLogs = () => {
   };
 
   const handleNewMessage = (topic: string, content: string) => {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMessage: Message = {
       id: Date.now(),
       topic,
       content,
       isSender: topic.includes('Window monitor'),
+      timestamp,
     };
-
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  
+    setMessages((prevMessages) => {
+      const updatedMessages = [...prevMessages, newMessage];
+      if (updatedMessages.length > 50) {
+        updatedMessages.shift(); 
+      }
+      return updatedMessages;
+    });
   };
+  
 
   useEffect(() => {
     checkLoginStatus();
-    
     if (!mqttClientRef.current) {
       mqttClientRef.current = new MqttClient();
 
@@ -76,6 +85,7 @@ const HistoryLogs = () => {
           >
             <Text style={styles.topic}>{msg.topic}</Text>
             <Text style={styles.messageText}>{msg.content}</Text>
+            <Text style={styles.timestamp}>{msg.timestamp}</Text>
           </View>
         ))}
       </ScrollView>
@@ -114,6 +124,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#e0e0e0',
     marginTop: 4,
+  },
+  timestamp: {
+    fontSize: 12,
+    color: '#b0b0b0',
+    marginTop: 4,
+    alignSelf: 'flex-end',
   },
 });
 

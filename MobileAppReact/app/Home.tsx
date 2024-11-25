@@ -23,7 +23,6 @@ const Home = () => {
 
   const checkLoginStatus = async () => {
     let isLoggedIn;
-    
     if (Platform.OS === 'web') {
       isLoggedIn = Cookies.get('isLoggedIn') || 'False';
     } else {
@@ -40,18 +39,19 @@ const Home = () => {
     React.useCallback(() => {
       checkLoginStatus(); 
       checkStatus();
+       const statusCheckInterval = setInterval(() => {
+         checkStatus();
+       }, 3000);
 
       mqttClient.addTopic('Window monitor', handleMQTTMessage);
       mqttClient.addTopic('Window info', handleMQTTMessage);
       mqttClient.addTopic('This device', handleMQTTMessage);
 
-      const statusCheckInterval = setInterval(() => {
-        checkStatus();
-      }, 3000);
+
 
       return () => {
         // mqttClient.disconnect();
-        // clearInterval(statusCheckInterval);
+         //clearInterval(statusCheckInterval);
         // if (StatusTimeoutRef.current) clearTimeout(StatusTimeoutRef.current);
         
       };
